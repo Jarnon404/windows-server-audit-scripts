@@ -1,0 +1,21 @@
+# Generated audit output
+AuditReports/
+Inventaario/
+*.csv
+*.xlsx
+*.html
+*.json
+*.log
+*.zip
+*.7z
+*.bak
+*.tmp
+
+# PowerShell / editor
+*.ps1xml
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

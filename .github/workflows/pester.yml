@@ -1,0 +1,22 @@
+name: Pester Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  repository-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Pester
+        shell: pwsh
+        run: |
+          Install-Module Pester -Scope CurrentUser -Force -SkipPublisherCheck
+      - name: Run repository tests
+        shell: pwsh
+        run: |
+          Import-Module Pester -MinimumVersion 5.0 -Force
+          Invoke-Pester -Path ./tests -Output Detailed

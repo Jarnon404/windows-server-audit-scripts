@@ -1,0 +1,67 @@
+name: Public Safety Check
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  public-safety-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for unsafe public repository content
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          $ExcludedDirs = @('.git', '.github', 'tests', 'docs', 'examples')
+          $GeneratedExtensions = @('.csv', '.xlsx', '.html', '.json', '.log', '.zip', '.7z', '.bak', '.tmp')
+          $AllowedGeneratedFiles = @()
+
+          $Files = Get-ChildItem -Path . -Recurse -File | Where-Object {
+            $FullName = $_.FullName
+            -not ($ExcludedDirs | Where-Object { $FullName -match "[\\/]$($_)([\\/]|$)" })
+          }
+
+          $Generated = $Files | Where-Object {
+            $GeneratedExtensions -contains $_.Extension.ToLowerInvariant() -and
+            $AllowedGeneratedFiles -notcontains $_.Name
+          }
+
+          if ($Generated) {
+            Write-Host 'Generated/output-like files should not be committed to the public repository:' -ForegroundColor Red
+            $Generated | Select-Object FullName | Format-Table -AutoSize
+            throw 'Generated/output-like files detected.'
+          }
+
+          $Patterns = @(
+            @{ Name = 'Private IPv4 address'; Pattern = '\b(10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.)\d{1,3}\.\d{1,3}\b' },
+            @{ Name = 'Internal DNS suffix'; Pattern = '(?i)\.(local|lan|corp)\b' },
+            @{ Name = 'Possible email address'; Pattern = '(?i)\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b' },
+            @{ Name = 'Possible secret assignment'; Pattern = '(?i)(password|passwd|secret|token|apikey|api_key)\s*=\s*[''"][^''"]+[''"]' }
+          )
+
+          $Findings = @()
+          foreach ($File in $Files) {
+            $Content = Get-Content -Path $File.FullName -Raw -ErrorAction SilentlyContinue
+            if ([string]::IsNullOrWhiteSpace($Content)) { continue }
+
+            foreach ($Item in $Patterns) {
+              if ($Content -match $Item.Pattern) {
+                $Findings += [pscustomobject]@{
+                  File = $File.FullName
+                  Finding = $Item.Name
+                }
+              }
+            }
+          }
+
+          if ($Findings) {
+            Write-Host 'Potentially unsafe public content detected:' -ForegroundColor Red
+            $Findings | Format-Table -AutoSize
+            throw 'Public safety check failed.'
+          }
+
+          Write-Host 'Public safety check passed.' -ForegroundColor Green
