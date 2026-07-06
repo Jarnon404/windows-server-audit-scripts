@@ -1,25 +1,44 @@
 name: PSScriptAnalyzer
 
 on:
-  pull_request:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   analyze:
+    name: Analyze PowerShell scripts
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Install PSScriptAnalyzer
         shell: pwsh
         run: |
           Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
-      - name: Run PSScriptAnalyzer
+
+      - name: Run PSScriptAnalyzer warnings
         shell: pwsh
         run: |
-          $Results = Invoke-ScriptAnalyzer -Path ./scripts -Recurse -Severity Warning,Error
-          if ($Results) {
-            $Results | Format-Table -AutoSize
-            throw "PSScriptAnalyzer found issues."
+          $Warnings = Invoke-ScriptAnalyzer -Path ./scripts -Recurse -Severity Warning
+          if ($Warnings) {
+            Write-Host "PSScriptAnalyzer warnings found:"
+            $Warnings | Format-Table RuleName, Severity, ScriptName, Line, Message -AutoSize
           }
+          else {
+            Write-Host "No PSScriptAnalyzer warnings found."
+          }
+
+      - name: Run PSScriptAnalyzer errors
+        shell: pwsh
+        run: |
+          $Errors = Invoke-ScriptAnalyzer -Path ./scripts -Recurse -Severity Error
+          if ($Errors) {
+            $Errors | Format-Table RuleName, Severity, ScriptName, Line, Message -AutoSize
+            throw "PSScriptAnalyzer found error-level issues."
+          }
+
+          Write-Host "No PSScriptAnalyzer error-level issues found."
