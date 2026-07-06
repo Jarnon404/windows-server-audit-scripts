@@ -1,5 +1,11 @@
 # Windows Server Audit Scripts
 
+[![PSScriptAnalyzer](https://github.com/Jarnon404/windows-server-audit-scripts/actions/workflows/psscriptanalyzer.yml/badge.svg)](https://github.com/Jarnon404/windows-server-audit-scripts/actions/workflows/psscriptanalyzer.yml)
+[![Pester Tests](https://github.com/Jarnon404/windows-server-audit-scripts/actions/workflows/pester.yml/badge.svg)](https://github.com/Jarnon404/windows-server-audit-scripts/actions/workflows/pester.yml)
+[![Secret Scan](https://github.com/Jarnon404/windows-server-audit-scripts/actions/workflows/gitleaks.yml/badge.svg)](https://github.com/Jarnon404/windows-server-audit-scripts/actions/workflows/gitleaks.yml)
+[![Public Safety Check](https://github.com/Jarnon404/windows-server-audit-scripts/actions/workflows/public-safety-check.yml/badge.svg)](https://github.com/Jarnon404/windows-server-audit-scripts/actions/workflows/public-safety-check.yml)
+[![Release](https://img.shields.io/github/v/release/Jarnon404/windows-server-audit-scripts?label=release)](https://github.com/Jarnon404/windows-server-audit-scripts/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 Public-safe PowerShell audit scripts for Windows Server and domain-controller focused inventory reporting.
 
 This repository contains sanitized audit scripts originally prepared for operational Windows Server review work. The public version is intentionally cleaned so it can be shared without customer-specific data.
