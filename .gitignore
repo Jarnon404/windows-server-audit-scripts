@@ -19,3 +19,6 @@ Inventaario/
 # OS
 .DS_Store
 Thumbs.db
+
+# Allow GitHub Pages entry point
+!docs/index.html
