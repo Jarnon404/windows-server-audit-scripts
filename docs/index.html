@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Windows Server Audit Scripts</title>
+  <meta name="description" content="Public-safe PowerShell audit scripts for Windows Server and domain-controller inventory reporting.">
+  <link rel="stylesheet" href="./assets/css/site.css">
+</head>
+<body>
+  <main class="container">
+    <section class="hero">
+      <div class="eyebrow">PowerShell / Windows Server / Audit</div>
+      <h1>Windows Server Audit Scripts</h1>
+      <p class="lead">
+        Public-safe PowerShell audit scripts for Windows Server and domain-controller focused inventory reporting.
+        The repository is sanitized for GitHub and designed to avoid committing customer-specific output.
+      </p>
+    </section>
+
+    <section class="section grid">
+      <article class="card full">
+        <h2>Purpose</h2>
+        <p>
+          This project provides practical audit scripts for collecting Windows Server inventory, operational state,
+          security-related configuration and domain-controller focused information into reviewable reports.
+        </p>
+        <div class="kpi">
+          <span>Windows Server</span>
+          <span>Domain Controller</span>
+          <span>PowerShell</span>
+          <span>HTML reports</span>
+          <span>Public-safe repository</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Windows Server Audit</h2>
+        <pre><code>scripts/windows-server-audit/Windows-Server-Audit.ps1</code></pre>
+        <p>General server audit and inventory script for local or remote Windows Server review.</p>
+      </article>
+
+      <article class="card">
+        <h2>Domain Controller Audit</h2>
+        <pre><code>scripts/domain-controller-audit/Windows-DomainController-Audit.ps1</code></pre>
+        <p>Domain-controller focused audit script for AD DS and privileged access review where modules are available.</p>
+      </article>
+
+      <article class="card full">
+        <h2>Safety model</h2>
+        <p>
+          No generated reports, customer names, tenant identifiers, internal hostnames, private IP addresses,
+          usernames, email addresses or credentials should be committed to this repository.
+        </p>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <p>MIT licensed. Public-safe Windows Server audit tooling.</p>
+    </footer>
+  </main>
+</body>
+</html>
